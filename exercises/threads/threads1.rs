@@ -6,41 +6,37 @@
 // The program should wait until all the spawned threads have finished and
 // should collect their return values into a vector.
 
+use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, Instant};
 
 fn main() {
     let mut handles = vec![];
+    let results = Arc::new(Mutex::new(Vec::new()));
     for i in 0..10 {
+        let results = Arc::clone(&results);
         handles.push(thread::spawn(move || {
-<<<<<<< Updated upstream
             let start = Instant::now();
             thread::sleep(Duration::from_millis(250));
             println!("thread {} is complete", i);
-            start.elapsed().as_millis()
-=======
-            thread::sleep(Duration::from_millis(250));
-            println!("thread {} is complete", i);
->>>>>>> Stashed changes
+            start.elapsed().as_millis();
+            results.lock().unwrap().push(start.elapsed().as_millis());
         }));
     }
 
-    let mut results: Vec<u128> = vec![];
+    let mut completed_threads = 0;
     for handle in handles {
         // TODO: a struct is returned from thread::spawn, can you use it?
-<<<<<<< Updated upstream
-=======
         handle.join().unwrap();
         completed_threads += 1;
->>>>>>> Stashed changes
     }
 
-    if results.len() != 10 {
+    if results.lock().unwrap().len() != completed_threads {
         panic!("Oh no! All the spawned threads did not finish!");
     }
-    
+
     println!();
-    for (i, result) in results.into_iter().enumerate() {
+    for (i, result) in results.lock().unwrap().iter().enumerate() {
         println!("thread {} took {}ms", i, result);
     }
 }

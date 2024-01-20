@@ -14,16 +14,12 @@ trait AppendBar {
 }
 
 impl AppendBar for String {
-<<<<<<< Updated upstream
-    // TODO: Implement `AppendBar` for type `String`.
-=======
     //Add your code here
     fn append_bar(self) -> Self {
         let mut s = self;
         s.push_str("Bar");
         s
     }
->>>>>>> Stashed changes
 }
 
 fn main() {

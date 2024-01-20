@@ -24,15 +24,8 @@ impl Queue {
 
 fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () {
     let qc = Arc::new(q);
-<<<<<<< Updated upstream
     let qc1 = Arc::clone(&qc);
     let qc2 = Arc::clone(&qc);
-=======
-    let qc1 = qc.clone();
-    let qc2 = qc.clone();
-    let tx1 = tx.clone();
-    let tx2 = tx.clone();
->>>>>>> Stashed changes
 
     thread::spawn(move || {
         for val in &qc1.first_half {
